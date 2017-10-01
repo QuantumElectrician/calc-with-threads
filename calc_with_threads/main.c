@@ -18,9 +18,16 @@ typedef struct {
     int result;
 }threadTask;
 
-static int calc() {
-    
-    return calc();
+void* calc(threadTask* threadTaskAd)
+{
+    threadTaskAd->result = 0;
+    int k = threadTaskAd->begin;
+    while (k != threadTaskAd->end)
+    {
+        threadTaskAd->result = threadTaskAd->result + k;
+        k++;
+    }
+    return threadTaskAd;
 }
 
 int main(int argc, const char * argv[])
@@ -31,7 +38,7 @@ int main(int argc, const char * argv[])
     int NUMBER_OF_THREADS = atoi(argv[3]);
     unsigned long sigma = 0;
 
-    threadTask* tasks = malloc(NUMBER_OF_THREADS * sizeof(threadTask));
+    threadTask* tasks = (threadTask*)malloc(NUMBER_OF_THREADS * sizeof(threadTask));
     pthread_t* threadId = malloc(NUMBER_OF_THREADS* sizeof(pthread_t));
     
     int loadPerThread = (right - left) / NUMBER_OF_THREADS;
@@ -40,7 +47,7 @@ int main(int argc, const char * argv[])
     {
         tasks[i].begin = left + i * loadPerThread;
         tasks[i].end = tasks[i].begin + loadPerThread;
-        result = pthread_create(threadId+i, NULL, calc(), (void*) &tasks[i]);
+        result = pthread_create(threadId+i, NULL, calc, (void*) &tasks[i]);
         if (result)
         {
             printf("Can't create thread %d, returned value = %d\n", i,result);
@@ -48,11 +55,19 @@ int main(int argc, const char * argv[])
         }
     }
     
+    for (int i = 0; i < NUMBER_OF_THREADS; i++)
+    {
+        sigma = sigma + tasks[i].result;
+    }
+    
     int delta = right - left + loadPerThread * NUMBER_OF_THREADS;
     for (int i = delta; i <= right; i++)
     {
-        sigma = sigma + delta;
+        sigma = sigma + i;
     }
     
+    free(tasks);
+    free(threadId);
+    printf("%u\n", sigma);
     return 0;
 }
