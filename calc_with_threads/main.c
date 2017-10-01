@@ -62,7 +62,7 @@ int main(int argc, const char * argv[])
         sigma = sigma + tasks[i].result;
     }
     
-    int delta = right - left + loadPerThread * NUMBER_OF_THREADS;
+    int delta = left + loadPerThread * NUMBER_OF_THREADS;
     for (int i = delta; i <= right; i++)
     {
         sigma = sigma + i;
