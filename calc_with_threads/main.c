@@ -33,11 +33,29 @@ void* calc(threadTask* threadTaskAd)
 int main(int argc, const char * argv[])
 {
     int result;
-    int left = atoi(argv[1]);
-    int right = atoi(argv[2]);
-    int NUMBER_OF_THREADS = atoi(argv[3]);
-    unsigned long sigma = 0;
+    int left;
+    int right;
+    int NUMBER_OF_THREADS;
+    long sigma = 0;
 
+    if (argc < 4)
+    {
+        printf("\nI want you to print arguments in command line, but you can print it here\n\n");
+        printf("Left Border: ");
+        scanf("%d", &left);
+        printf("Right Border: ");
+        scanf("%d", &right);
+        printf("Number of threads: ");
+        scanf("%d", &NUMBER_OF_THREADS);
+        printf("Counting...\n\n");
+    }
+    else
+    {
+        left = atoi(argv[1]);
+        right = atoi(argv[2]);
+        NUMBER_OF_THREADS = atoi(argv[3]);
+    }
+    
     threadTask* tasks = (threadTask*)malloc(NUMBER_OF_THREADS * sizeof(threadTask));
     pthread_t* threadId = malloc(NUMBER_OF_THREADS* sizeof(pthread_t));
     
@@ -70,6 +88,6 @@ int main(int argc, const char * argv[])
     
     free(tasks);
     free(threadId);
-    printf("%lu\n", sigma);
+    printf("Summ is %ld\n", sigma);
     return 0;
 }
