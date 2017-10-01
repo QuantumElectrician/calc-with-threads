@@ -18,16 +18,17 @@ typedef struct {
     int result;
 }threadTask;
 
-void* calc(threadTask* threadTaskAd)
+void* calc(void* threadTaskAd)
 {
-    threadTaskAd->result = 0;
-    int k = threadTaskAd->begin;
-    while (k != threadTaskAd->end)
+    threadTask* copy = (threadTask*)threadTaskAd;
+    copy->result = 0;
+    int k = copy->begin;
+    while (k != copy->end)
     {
-        threadTaskAd->result = threadTaskAd->result + k;
+        copy->result = copy->result + k;
         k++;
     }
-    return threadTaskAd;
+    return copy;
 }
 
 int main(int argc, const char * argv[])
