@@ -47,7 +47,7 @@ int main(int argc, const char * argv[])
     {
         tasks[i].begin = left + i * loadPerThread;
         tasks[i].end = tasks[i].begin + loadPerThread;
-        result = pthread_create(threadId+i, NULL, calc, (void*) &tasks[i]);
+        result = pthread_create(threadId+i, NULL, calc, (threadTask*) &tasks[i]);
         if (result)
         {
             printf("Can't create thread %d, returned value = %d\n", i,result);
@@ -68,6 +68,6 @@ int main(int argc, const char * argv[])
     
     free(tasks);
     free(threadId);
-    printf("%u\n", sigma);
+    printf("%lu\n", sigma);
     return 0;
 }
